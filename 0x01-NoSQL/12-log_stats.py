@@ -1,33 +1,27 @@
 #!/usr/bin/env python3
-""" 12. Log stats
 """
-
-
+Module 12-log_stats.py
+"""
 from pymongo import MongoClient
 
-
-def log_stats():
-    """ log_stats.
-    """
-    client = MongoClient('mongodb://127.0.0.1:27017')
-    logs_collection = client.logs.nginx
-    total = logs_collection.count_documents({})
-    get = logs_collection.count_documents({"method": "GET"})
-    post = logs_collection.count_documents({"method": "POST"})
-    put = logs_collection.count_documents({"method": "PUT"})
-    patch = logs_collection.count_documents({"method": "PATCH"})
-    delete = logs_collection.count_documents({"method": "DELETE"})
-    path = logs_collection.count_documents(
-        {"method": "GET", "path": "/status"})
-    print(f"{total} logs")
-    print("Methods:")
-    print(f"\tmethod GET: {get}")
-    print(f"\tmethod POST: {post}")
-    print(f"\tmethod PUT: {put}")
-    print(f"\tmethod PATCH: {patch}")
-    print(f"\tmethod DELETE: {delete}")
-    print(f"{path} status check")
-
-
 if __name__ == "__main__":
-    log_stats()
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    nginx_collection = client.logs.nginx
+
+    total_logs = nginx_collection.count_documents({})
+    total_gets = nginx_collection.count_documents({"method": "GET"})
+    total_posts = nginx_collection.count_documents({"method": "POST"})
+    total_puts = nginx_collection.count_documents({"method": "PUT"})
+    total_patchs = nginx_collection.count_documents({"method": "PATCH"})
+    total_deletes = nginx_collection.count_documents({"method": "DELETE"})
+    total_status = nginx_collection.count_documents(
+                    {"method": "GET", "path": "/status"})
+
+    print("{} logs".format(total_logs))
+    print("Methods:")
+    print("\tmethod GET: {}".format(total_gets))
+    print("\tmethod POST: {}".format(total_posts))
+    print("\tmethod PUT: {}".format(total_puts))
+    print("\tmethod PATCH: {}".format(total_patchs))
+    print("\tmethod DELETE: {}".format(total_deletes))
+    print("{} status check".format(total_status))
